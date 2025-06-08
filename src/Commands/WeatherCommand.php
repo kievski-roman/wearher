@@ -9,8 +9,13 @@ use App\Services\WeatherService;
 class WeatherCommand implements BotCommandInterface
 {
         private $bot;
-        public function __construct(Bot $bot){
+        private WeatherService $weatherService;
+
+
+    // DI: В конструктор передаємо об'єкти Bot і WeatherService
+        public function __construct(Bot $bot, WeatherService $weatherService){
             $this->bot = $bot;
+            $this->weatherService = $weatherService;
         }
         public function handle($chatId, $text): void
         {
@@ -21,7 +26,9 @@ class WeatherCommand implements BotCommandInterface
                 $this->bot->sendMessage($chatId,"введіть наприклад: /weather Амстердам ") ;
                 return;
             }
-            $data = (new WeatherService())->getWeather($title);
+
+            // Витягуємо погоду з WeatherService
+            $data = $this->weatherService->getWeather($title);
             if(!$data){
                 $this->bot->sendMessage($chatId,"Не має такого міста". "*{$title}*") ;
                 return;

@@ -3,9 +3,13 @@
 namespace App\Services;
 use Dotenv\Dotenv;
 
+// Клас відповідає за отримання погоди з OpenWeather API
+
 class WeatherService
 {
     private $apiKey;
+
+
     public function __construct()
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
